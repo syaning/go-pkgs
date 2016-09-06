@@ -226,7 +226,7 @@ func Copy(dst Writer, src Reader) (written int64, err error) {
 }
 ```
 
-`CopyN`与`Copy`类似，只不多限定了拷贝的数据量。对数据量的限制是通过一个`LimitedReader`来实现的。
+`CopyN`与`Copy`类似，只不过限定了拷贝的数据量。对数据量的限制是通过一个`LimitedReader`来实现的。
 
 ```go
 func CopyN(dst Writer, src Reader, n int64) (written int64, err error) {
