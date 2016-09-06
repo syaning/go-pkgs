@@ -226,7 +226,7 @@ func Copy(dst Writer, src Reader) (written int64, err error) {
 }
 ```
 
-`CopyN`与`Copy`类似，只不多限定了拷贝的数据量。对数据量的限制是通过一个`LimitReader`来实现的。
+`CopyN`与`Copy`类似，只不多限定了拷贝的数据量。对数据量的限制是通过一个`LimitedReader`来实现的。
 
 ```go
 func CopyN(dst Writer, src Reader, n int64) (written int64, err error) {
@@ -241,3 +241,37 @@ func CopyN(dst Writer, src Reader, n int64) (written int64, err error) {
     return
 }
 ```
+
+## LimitedReader
+
+`LimitedReader`是对`Reader`的一层包装，限制了最多读取的数据量。
+
+```go
+type LimitedReader struct {
+    R Reader // underlying reader
+    N int64  // max bytes remaining
+}
+```
+
+每次调用`Read`方法后，都会调整`N`的值：
+
+```go
+func (l *LimitedReader) Read(p []byte) (n int, err error) {
+    if l.N <= 0 {
+        return 0, EOF
+    }
+    if int64(len(p)) > l.N {
+        p = p[0:l.N]
+    }
+    n, err = l.R.Read(p)
+    l.N -= int64(n) // 调整N的值
+    return
+}
+```
+
+`LimitReader`方法可以创建一个`LimitedReader`：
+
+```go
+func LimitReader(r Reader, n int64) Reader { return &LimitedReader{r, n} }
+```
+
