@@ -67,3 +67,69 @@ func up(h Interface, j int) {
     }
 }
 ```
+
+## Init
+
+```go
+func Init(h Interface) {
+    n := h.Len()
+    // 最后一个节点下表为n-1，因此其父节点为(n-1-1)/2，即n/2-1
+    for i := n/2 - 1; i >= 0; i-- {
+        down(h, i, n)
+    }
+}
+```
+
+## Push
+
+```go
+func Push(h Interface, x interface{}) {
+    h.Push(x)
+    up(h, h.Len()-1)
+}
+```
+
+`Push`的时候，先把新元素放置在结尾，然后让其上升。
+
+## Pop
+
+```go
+func Pop(h Interface) interface{} {
+    n := h.Len() - 1
+    h.Swap(0, n)
+    down(h, 0, n)
+    return h.Pop()
+}
+```
+
+`Pop`的时候，先把根节点和最后一个节点交换位置，然后让新的根节点下降。注意这里`down`的第三个参数是`n`的值为`h.Len() - 1`，因此新的根节点下降的过程中，原先的根节点位于最后的位置，不受影响。
+
+## Remove
+
+```go
+func Remove(h Interface, i int) interface{} {
+    n := h.Len() - 1
+    if n != i {
+        h.Swap(i, n)
+        down(h, i, n)
+        up(h, i)
+    }
+    return h.Pop()
+}
+```
+
+`Remove`操作与`Pop`非常类似，先将需要移除的节点和最后一个节点交换位置，然后同时进行`down`和`up`操作。
+
+## Fix
+
+```go
+func Fix(h Interface, i int) {
+    if !down(h, i, h.Len()) {
+        up(h, i)
+    }
+}
+```
+
+当某个节点的值改变后，通过`Fix`操作来调整堆的结构。该操作实际上也是同时进行了`down`和`up`操作。
+
+与先移除旧节点再添加新节点相比，`Fix`操作的复杂度要低一些。
