@@ -51,7 +51,7 @@ s := []byte("Hello 世界")
 fmt.Println(bytes.Index(s, []byte("llo"))) // 2
 fmt.Println(bytes.IndexAny(s, "ole"))      // 1
 fmt.Println(bytes.IndexByte(s, 'l'))       // 2
-fmt.Println(bytes.IndexRune(s, '界'))      // 9
+fmt.Println(bytes.IndexRune(s, '界'))       // 9
 ```
 
 ### 包含
@@ -62,11 +62,35 @@ fmt.Println(bytes.IndexRune(s, '界'))      // 9
 - func ContainsAny(b []byte, chars string) bool
 - func ContainsRune(b []byte, r rune) bool
 - func Count(s, sep []byte) int
+- func HasPrefix(s, prefix []byte) bool
+- func HasSuffix(s, suffix []byte) bool
 
 例如：
 
 ```go
+s := []byte("Hello 世界")
+fmt.Println(bytes.Contains(s, []byte("llo"))) // true
+fmt.Println(bytes.ContainsAny(s, "llo"))      // true
+fmt.Println(bytes.ContainsRune(s, '世'))       // true
+fmt.Println(bytes.Count(s, []byte("llo")))    // 1
+fmt.Println(bytes.HasPrefix(s, []byte("llo"))) // false
+fmt.Println(bytes.HasSuffix(s, []byte("世界")))  // true
+```
 
+在源码中，`Contains[Any/Rune]`是通过`Index[Any/Rune]`来实现的，例如：
+
+```go
+func ContainsAny(b []byte, chars string) bool {
+    return IndexAny(b, chars) >= 0
+}
+```
+
+`HasPrefix`和`HasSuffix`是通过`Equal`来实现的，例如：
+
+```go
+func HasPrefix(s, prefix []byte) bool {
+    return len(s) >= len(prefix) && Equal(s[0:len(prefix)], prefix)
+}
 ```
 
 ## Buffer
