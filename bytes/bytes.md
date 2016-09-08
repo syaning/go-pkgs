@@ -234,6 +234,22 @@ fmt.Println(string(bytes.Join(s, []byte(", "))))
 - func Replace(s, old, new []byte, n int) []byte
 - func Runes(s []byte) []rune
 
+例如：
+
+```go
+s := []byte("hello")
+fmt.Println(string(bytes.Repeat(s, 3)))                             // hellohellohello
+fmt.Println(string(bytes.Replace(s, []byte("l"), []byte("L"), 1)))  // heLlo
+fmt.Println(string(bytes.Replace(s, []byte("l"), []byte("L"), -1))) // heLLo
+
+s = []byte("hello 世界")
+fmt.Println(s)              // [104 101 108 108 111 32 228 184 150 231 149 140]
+fmt.Println(bytes.Runes(s)) // [104 101 108 108 111 32 19990 30028]
+
+f := func(r rune) rune { return r + 1 }
+fmt.Println(string(bytes.Map(f, []byte("abcdefg")))) // bcdefgh
+```
+
 ## Buffer
 
 ## Reader
