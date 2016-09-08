@@ -252,4 +252,128 @@ fmt.Println(string(bytes.Map(f, []byte("abcdefg")))) // bcdefgh
 
 ## Buffer
 
+`Buffer`定义了一个缓冲区，其定义如下：
+
+```go
+type Buffer struct {
+    buf       []byte            // contents are the bytes buf[off : len(buf)]
+    off       int               // read at &buf[off], write at &buf[len(buf)]
+    runeBytes [utf8.UTFMax]byte // avoid allocation of slice on each call to WriteRune
+    bootstrap [64]byte          // memory to hold first slice; helps small buffers avoid allocation.
+    lastRead  readOp            // last read operation, so that Unread* can work correctly.
+}
+```
+
+它有一个内在的`buf`用于存储缓冲数据，`off`表示缓冲区起始位置。因此实际的数据位于`off`到`len(buf)`之间。执行`Read`操作的时候，会修改`off`的值；执行`Write`操作的时候，会改变`buf`的长度。
+
+可以通过如下方式创建新的`Buffer`：
+
+```go
+var a bytes.Buffer
+b := bytes.NewBuffer([]byte("hello"))
+c := bytes.NewBufferString("hello")
+```
+
+### 基本操作
+
+`Buffer`的基本操作有：
+
+- func (b *Buffer) Len() int
+- func (b *Buffer) Cap() int
+- func (b *Buffer) Bytes() []byte
+- func (b *Buffer) String() string
+
+例如：
+
+```go
+buf := bytes.NewBufferString("hello")
+buf.ReadByte()
+fmt.Println(buf.Len())    // 4
+fmt.Println(buf.Cap())    // 8
+fmt.Println(buf.Bytes())  // [101 108 108 111]
+fmt.Println(buf.String()) // ello
+```
+
+### Truncate 和 Grow
+
+`Truncate`可以截短缓冲区：
+
+```go
+func (b *Buffer) Truncate(n int) {
+    b.lastRead = opInvalid
+    switch {
+    case n < 0 || n > b.Len():
+        panic("bytes.Buffer: truncation out of range")
+    case n == 0:
+        // Reuse buffer space.
+        b.off = 0
+    }
+    // 截取前n个缓冲数据，如果n为0，则相当于buf重置
+    b.buf = b.buf[0 : b.off+n]
+}
+```
+
+例如：
+
+```go
+buf := bytes.NewBufferString("hello")
+buf.Truncate(3)
+fmt.Println(buf) // hel
+buf.Truncate(0)
+fmt.Println(buf.Len()) // 0
+```
+
+`Reset`方法其实就是执行了`Truncate(0)`。
+
+`Grow`可以扩展缓冲区从而确保可以容纳更多缓冲数据：
+
+```go
+func (b *Buffer) Grow(n int) {
+    if n < 0 {
+        panic("bytes.Buffer.Grow: negative count")
+    }
+    m := b.grow(n)
+    // grow操作会在缓冲数据区之后增加一片空白区域
+    // m表示的是数据区的末尾位置
+    // 因此这里需要通过切片操作保证Len操作的正确性
+    b.buf = b.buf[0:m]
+}
+
+func (b *Buffer) grow(n int) int {
+    m := b.Len()
+    // 如果缓冲区为空，则重置
+    if m == 0 && b.off != 0 {
+        b.Truncate(0)
+    }
+    // 超出缓冲区容量
+    if len(b.buf)+n > cap(b.buf) {
+        var buf []byte
+        // 初始化缓冲区
+        if b.buf == nil && n <= len(b.bootstrap) {
+            buf = b.bootstrap[0:]
+        } else if m+n <= cap(b.buf)/2 {
+            // We can slide things down instead of allocating a new
+            // slice. We only need m+n <= cap(b.buf) to slide, but
+            // we instead let capacity get twice as large so we
+            // don't spend all our time copying.
+            // m为当前缓冲区的数据量，n为扩展大小，或者说即将写入的数据量
+            // 因此m+n可以理解为新的缓冲数据量
+            // 如果缓冲数据量不超过一半容量，则不需要新分配内存
+            copy(b.buf[:], b.buf[b.off:])
+            buf = b.buf[:m]
+        } else {
+            // 如果缓冲数据量超过一半容量，则需要新分配内存
+            buf = makeSlice(2*cap(b.buf) + n)
+            copy(buf, b.buf[b.off:])
+        }
+        b.buf = buf
+        b.off = 0
+    }
+    b.buf = b.buf[0 : b.off+m+n]
+    return b.off + m
+}
+```
+
+### Read
+
 ## Reader
