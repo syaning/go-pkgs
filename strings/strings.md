@@ -4,6 +4,8 @@
 
 strings的基本操作与[bytes](../bytes/bytes.md)的基本操作基本类似，不做赘述。
 
-## Replacer
-
 ## Reader
+
+与[bytes.Reader](../bytes/bytes.md#reader)相似，不做赘述。
+
+## Replacer
