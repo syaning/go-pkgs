@@ -544,7 +544,7 @@ if err != nil {
 `ReadFrom`从一个reader中读取数据到缓冲区，`WriteTo`将缓冲区中的数据写入到一个writer中。例如：
 
 ```go
-r := strings.NewReader("hello world")
+r := bytes.NewReader([]byte("hello world"))
 buf := new(bytes.Buffer)
 
 buf.ReadFrom(r)
@@ -552,3 +552,100 @@ buf.WriteTo(os.Stdout)
 ```
 
 ## Reader
+
+`bytes.Reader`可以将一个`[]byte`类型作为reader来使用，通过`NewReader`方法可以和粗昂见一个reader，例如：
+
+```go
+r := bytes.NewReader([]byte("hello world"))
+b := make([]byte, 5)
+r.Read(b)
+fmt.Println(string(b)) // hello
+```
+
+其定义如下：
+
+```go
+type Reader struct {
+    s        []byte
+    i        int64 // current reading index
+    prevRune int   // index of previous rune; or < 0
+}
+```
+
+其中`s`存放着数据，`i`表示当前读取到的下标，`prevRune`记录着之前读取的一个rune的下标，用于`UnreadRune`操作。
+
+### 基本操作
+
+- func (r *Reader) Len() int
+- func (r *Reader) Size() int64
+- func (r *Reader) Reset(b []byte)
+
+`Len`返回的是未读取的数据长度，`Size`返回的是总的数据长度，`Reset`重置了数据区。例如：
+
+```go
+r := bytes.NewReader([]byte("hello world"))
+r.ReadByte()
+fmt.Println(r.Len())  // 10
+fmt.Println(r.Size()) // 11
+r.Reset([]byte("welcome"))
+fmt.Println(r.Len()) // 7
+```
+
+这几个方法的源码比较简单，不做赘述。
+
+### read
+
+和read相关的方法有：
+
+- func (r *Reader) Read(b []byte) (n int, err error)
+- func (r *Reader) ReadByte() (byte, error)
+- func (r *Reader) ReadRune() (ch rune, size int, err error)
+- func (r *Reader) ReadAt(b []byte, off int64) (n int, err error)
+
+它们本质上都是讲数据从`reader.s`拷贝出来，然后更新`reader.i`的值。其中`ReadAt`是从特定位置读取数据，例如：
+
+```go
+r := bytes.NewReader([]byte("hello world"))
+b := make([]byte, 5)
+r.ReadAt(b, 6)
+fmt.Println(string(b)) // world
+```
+
+### unread
+
+有两个方法：
+
+- func (r *Reader) UnreadByte() error
+- func (r *Reader) UnreadRune() error
+
+其中`UnreadByte`只有在数据已经读取了之后才有效，`UnreadRune`只有在`ReadRune`之后才有效。源码比较简单，不做赘述。
+
+### Seek
+
+`Seek`方法本质上是改变了`reader.i`的值。例如：
+
+```go
+r := bytes.NewReader([]byte("hello world"))
+
+r.Seek(4, io.SeekStart)
+b, _ := r.ReadByte()
+fmt.Println(string(b)) // o
+
+r.Seek(3, io.SeekCurrent)
+b, _ = r.ReadByte()
+fmt.Println(string(b)) // r
+
+r.Seek(-4, io.SeekEnd)
+b, _ = r.ReadByte()
+fmt.Println(string(b)) // o
+}
+```
+
+### WriteTo
+
+`WriteTo`可以将数据写入到一个writer中，例如：
+
+```go
+r := bytes.NewReader([]byte("hello world"))
+r.WriteTo(os.Stdout)
+```
