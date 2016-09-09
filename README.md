@@ -1,5 +1,6 @@
 # go-pkgs
 
+- [errors](./errors/errors.md)
 - [io](./io/io.md)
 - [bytes](./bytes/bytes.md)
 - [strings](./strings/strings.md)
