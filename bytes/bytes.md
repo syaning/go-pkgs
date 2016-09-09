@@ -553,7 +553,7 @@ buf.WriteTo(os.Stdout)
 
 ## Reader
 
-`bytes.Reader`可以将一个`[]byte`类型作为reader来使用，通过`NewReader`方法可以和粗昂见一个reader，例如：
+`bytes.Reader`可以将一个`[]byte`类型作为reader来使用，通过`NewReader`方法可以创建一个reader，例如：
 
 ```go
 r := bytes.NewReader([]byte("hello world"))
