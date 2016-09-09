@@ -22,3 +22,12 @@ fmt.Println(strconv.Itoa(123))    // "123"
 - func ParseFloat(s string, bitSize int) (float64, error)
 - func ParseInt(s string, base int, bitSize int) (i int64, err error)
 - func ParseUint(s string, base int, bitSize int) (uint64, error)
+
+format相关方法将其它类型的数据转换为string，例如：
+
+```go
+fmt.Println(strconv.FormatBool(true))                 // true
+fmt.Println(strconv.FormatFloat(3.1415, 'E', -1, 64)) // 3.1415E+00
+fmt.Println(strconv.FormatInt(-42, 16))               // -2a
+fmt.Println(strconv.FormatUint(42, 16))               // 2a
+```
