@@ -491,4 +491,49 @@ buf.WriteString("界!")
 fmt.Println(buf.String()) // hello,世界!
 ```
 
+### unread
+
+unread操作会将已经读取的数据重新归入到缓冲区，本质上就是减小`off`的值。相关的方法有：
+
+- func (b *Buffer) UnreadByte() error
+- func (b *Buffer) UnreadRune() error
+
+```go
+func (b *Buffer) UnreadByte() error {
+    // 只有当上一次的操作是读操作的时候才可以执行unread操作
+    if b.lastRead != opReadRune && b.lastRead != opRead {
+        return errors.New("bytes.Buffer: UnreadByte: previous operation was not a read")
+    }
+    b.lastRead = opInvalid
+    if b.off > 0 {
+        b.off--
+    }
+    return nil
+}
+```
+
+例如：
+
+```go
+buf := bytes.NewBufferString("hello")
+
+buf.Read(make([]byte, 3))
+fmt.Println(buf) // lo
+
+err := buf.UnreadByte()
+if err != nil {
+    fmt.Println(err)
+} else {
+    fmt.Println(buf) // llo
+}
+
+buf.WriteByte('a')
+err = buf.UnreadByte()
+if err != nil {
+    fmt.Println(err) // bytes.Buffer: UnreadByte: previous operation was not a read
+} else {
+    fmt.Println(buf)
+}
+```
+
 ## Reader
