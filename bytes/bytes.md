@@ -536,4 +536,19 @@ if err != nil {
 }
 ```
 
+### ReadFrom 和 WriteTo
+
+- func (b *Buffer) ReadFrom(r io.Reader) (n int64, err error)
+- func (b *Buffer) WriteTo(w io.Writer) (n int64, err error)
+
+`ReadFrom`从一个reader中读取数据到缓冲区，`WriteTo`将缓冲区中的数据写入到一个writer中。例如：
+
+```go
+r := strings.NewReader("hello world")
+buf := new(bytes.Buffer)
+
+buf.ReadFrom(r)
+buf.WriteTo(os.Stdout)
+```
+
 ## Reader
