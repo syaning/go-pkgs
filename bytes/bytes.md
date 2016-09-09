@@ -374,6 +374,121 @@ func (b *Buffer) grow(n int) int {
 }
 ```
 
-### Read
+### read
+
+`Read`操作从缓冲区中读取数据：
+
+```go
+func (b *Buffer) Read(p []byte) (n int, err error) {
+    b.lastRead = opInvalid
+    // 缓冲区为空，重置
+    if b.off >= len(b.buf) {
+        b.Truncate(0)
+        if len(p) == 0 {
+            return
+        }
+        return 0, io.EOF
+    }
+    // 将数据从缓冲区中拷贝出来，并更新off的值
+    n = copy(p, b.buf[b.off:])
+    b.off += n
+    if n > 0 {
+        b.lastRead = opRead
+    }
+    return
+}
+```
+
+例如：
+
+```go
+buf := bytes.NewBufferString("hello world")
+p := make([]byte, 3)
+buf.Read(p)
+fmt.Println(string(p)) // hel
+```
+
+`Next`方法与`Read`基本类似，只不过参数不是一个slice而是一个数值表示要读取的数据量，另外一个区别是：`Read`操作是从缓冲区拷贝数据到新的slice，而`Next`是对当前缓冲区直接进行slice操作并返回结果。
+
+```go
+func (b *Buffer) Next(n int) []byte {
+    b.lastRead = opInvalid
+    m := b.Len()
+    if n > m {
+        n = m
+    }
+    // 对当前缓冲区直接进行slice操作
+    data := b.buf[b.off : b.off+n]
+    b.off += n
+    if n > 0 {
+        b.lastRead = opRead
+    }
+    return data
+}
+```
+
+其它与read相关的方法有：
+
+- func (b *Buffer) ReadByte() (byte, error)
+- func (b *Buffer) ReadBytes(delim byte) (line []byte, err error)
+- func (b *Buffer) ReadRune() (r rune, size int, err error)
+- func (b *Buffer) ReadString(delim byte) (line string, err error)
+
+例如：
+
+```go
+buf := bytes.NewBufferString("hello,世界!")
+
+c, _ := buf.ReadByte()
+fmt.Println(string(c)) // h
+
+s, _ := buf.ReadBytes(',')
+fmt.Println(string(s)) // ello,
+
+r, _, _ := buf.ReadRune()
+fmt.Println(string(r)) // 世
+
+l, _ := buf.ReadString('!')
+fmt.Println(l) // 界!
+```
+
+### write
+
+`Write`用于向缓冲区中写入数据：
+
+```go
+func (b *Buffer) Write(p []byte) (n int, err error) {
+    b.lastRead = opInvalid
+    // 首先通过grow操作确保缓冲区可以容纳更多的数据
+    m := b.grow(len(p))
+    // 将数据拷贝到缓冲区中
+    return copy(b.buf[m:], p), nil
+}
+```
+
+其相关的方法有：
+
+- func (b *Buffer) Write(p []byte) (n int, err error)
+- func (b *Buffer) WriteByte(c byte) error
+- func (b *Buffer) WriteRune(r rune) (n int, err error)
+- func (b *Buffer) WriteString(s string) (n int, err error)
+
+例如：
+
+```go
+var buf bytes.Buffer
+
+buf.Write([]byte("hello"))
+fmt.Println(buf.String()) // hello
+
+buf.WriteByte(',')
+fmt.Println(buf.String()) // hello,
+
+buf.WriteRune('世')
+fmt.Println(buf.String()) // hello,世
+
+buf.WriteString("界!")
+fmt.Println(buf.String()) // hello,世界!
+```
 
 ## Reader
