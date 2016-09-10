@@ -26,8 +26,32 @@ fmt.Println(strconv.Itoa(123))    // "123"
 format相关方法将其它类型的数据转换为string，例如：
 
 ```go
-fmt.Println(strconv.FormatBool(true))                 // true
-fmt.Println(strconv.FormatFloat(3.1415, 'E', -1, 64)) // 3.1415E+00
-fmt.Println(strconv.FormatInt(-42, 16))               // -2a
-fmt.Println(strconv.FormatUint(42, 16))               // 2a
+fmt.Println(strconv.FormatBool(true))                 // "true"
+fmt.Println(strconv.FormatFloat(3.1415, 'E', -1, 64)) // "3.1415E+00"
+fmt.Println(strconv.FormatInt(-42, 16))               // "-2a"
+fmt.Println(strconv.FormatUint(42, 16))               // "2a"
 ```
+
+parse相关方法将string转为其它类型的数据，例如：
+
+```go
+fmt.Println(strconv.ParseBool("tRue"))        // true <nil>
+fmt.Println(strconv.ParseFloat("3.1415", 32)) // 3.1414999961853027 <nil>
+fmt.Println(strconv.ParseFloat("3.1415", 64)) // 3.1415 <nil>
+fmt.Println(strconv.ParseInt("-42", 10, 32))  // -42 <nil>
+fmt.Println(strconv.ParseInt("11011", 2, 32)) // 27 <nil>
+fmt.Println(strconv.ParseInt("0xff", 0, 32))  // 255 <nil>
+fmt.Println(strconv.ParseUint("42", 16, 32))  // 66 <nil>
+```
+
+对于`ParseBool`，遵循如下规则：
+
+- 返回`true`：`"1"`，`"t"`，`"T"`，`"TRUE"`，`"true"`，`"True"`
+- 返回`false`：`"0"`，`"f"`，`"F"`，`"FALSE"`，`"false"`，`"False"`
+- 其它情况报错
+
+对于`ParseFloat`，`bitSize`取值为`32`或`64`。
+
+对于`ParseInt`，`base`取值在2~36之间，如果`base`为0，那么会根据第一个参数字符串的前缀来决定进制：`0`为8进制，`0x`为16进制，其它情况为10进制。第三个参数`bitSize`可以为`0`(int)，`8`(int8)，`16`(int16)，`32`(int32)，`64`(int64)。
+
+`ParseUint`与`ParseInt`类似。
