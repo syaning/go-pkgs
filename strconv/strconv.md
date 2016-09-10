@@ -7,12 +7,12 @@
 ```go
 fmt.Println(strconv.Atoi("123"))  // 123, nil
 fmt.Println(strconv.Atoi("123a")) // 0, strconv.ParseInt: parsing "123a": invalid syntax
-fmt.Println(strconv.Itoa(123))    // "123"
+fmt.Println(strconv.Itoa(123))    // 123
 ```
 
 ## format 和 parse
 
-相关方法有：
+format和parse是两组相反的方法，用于string和其它类型之间的相互转化。相关方法有：
 
 - func FormatBool(b bool) string
 - func FormatFloat(f float64, fmt byte, prec, bitSize int) string
@@ -26,10 +26,10 @@ fmt.Println(strconv.Itoa(123))    // "123"
 format相关方法将其它类型的数据转换为string，例如：
 
 ```go
-fmt.Println(strconv.FormatBool(true))                 // "true"
-fmt.Println(strconv.FormatFloat(3.1415, 'E', -1, 64)) // "3.1415E+00"
-fmt.Println(strconv.FormatInt(-42, 16))               // "-2a"
-fmt.Println(strconv.FormatUint(42, 16))               // "2a"
+fmt.Println(strconv.FormatBool(true))                 // true
+fmt.Println(strconv.FormatFloat(3.1415, 'E', -1, 64)) // 3.1415E+00
+fmt.Println(strconv.FormatInt(-42, 16))               // -2a
+fmt.Println(strconv.FormatUint(42, 16))               // 2a
 ```
 
 parse相关方法将string转为其它类型的数据，例如：
@@ -55,3 +55,18 @@ fmt.Println(strconv.ParseUint("42", 16, 32))  // 66 <nil>
 对于`ParseInt`，`base`取值在2~36之间，如果`base`为0，那么会根据第一个参数字符串的前缀来决定进制：`0`为8进制，`0x`为16进制，其它情况为10进制。第三个参数`bitSize`可以为`0`(int)，`8`(int8)，`16`(int16)，`32`(int32)，`64`(int64)。
 
 `ParseUint`与`ParseInt`类似。
+
+## IsGraphic 和 IsPrint
+
+## quote 和 unquote
+
+相关方法有：
+
+- func Quote(s string) string
+- func QuoteRune(r rune) string
+- func QuoteRuneToASCII(r rune) string
+- func QuoteRuneToGraphic(r rune) string
+- func QuoteToASCII(s string) string
+- func QuoteToGraphic(s string) string
+- func Unquote(s string) (string, error)
+- func UnquoteChar(s string, quote byte) (value rune, multibyte bool, tail string, err error)
