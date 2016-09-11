@@ -104,3 +104,14 @@ fmt.Println(string(strconv.AppendBool(dst, true)))     // hello true
 fmt.Println(string(strconv.AppendInt(dst, -42, 16)))   // hello -2a
 fmt.Println(string(strconv.AppendQuote(dst, "world"))) // hello "world"
 ```
+
+## CanBackquote
+
+`CanBackquote`方法用于判断一个字符串是否可以用反引号引起来，且不包含除了tab之外的任何控制字符。例如：
+
+```go
+fmt.Println(strconv.CanBackquote("hello world"))   // true
+fmt.Println(strconv.CanBackquote("`hello world`")) // false
+fmt.Println(strconv.CanBackquote("hello\nworld"))  // false
+fmt.Println(strconv.CanBackquote("hello\tworld"))  // true
+```
