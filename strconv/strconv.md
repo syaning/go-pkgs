@@ -70,3 +70,37 @@ fmt.Println(strconv.ParseUint("42", 16, 32))  // 66 <nil>
 - func QuoteToGraphic(s string) string
 - func Unquote(s string) (string, error)
 - func UnquoteChar(s string, quote byte) (value rune, multibyte bool, tail string, err error)
+
+quote相关方法返回一个用引号引着的字符串，unquote与quote行为相反，例如：
+
+```go
+fmt.Println(strconv.Quote(`"Hello   ☺"`))        // "\"Hello\t☺\""
+fmt.Println(strconv.QuoteRune('☺'))            // '☺'
+fmt.Println(strconv.QuoteRuneToASCII('☺'))     // '\u263a'
+fmt.Println(strconv.QuoteToASCII(`"Hello    ☺"`)) // "\"Hello\t\u263a\""
+fmt.Println(strconv.Unquote(`"\"Hello\t☺\""`)) // "Hello    ☺" <nil>
+```
+
+## append
+
+append主要功能是将数据添加到slice中，相关方法有：
+
+- func AppendBool(dst []byte, b bool) []byte
+- func AppendFloat(dst []byte, f float64, fmt byte, prec, bitSize int) []byte
+- func AppendInt(dst []byte, i int64, base int) []byte
+- func AppendQuote(dst []byte, s string) []byte
+- func AppendQuoteRune(dst []byte, r rune) []byte
+- func AppendQuoteRuneToASCII(dst []byte, r rune) []byte
+- func AppendQuoteRuneToGraphic(dst []byte, r rune) []byte
+- func AppendQuoteToASCII(dst []byte, s string) []byte
+- func AppendQuoteToGraphic(dst []byte, s string) []byte
+- func AppendUint(dst []byte, i uint64, base int) []byte
+
+例如：
+
+```go
+dst := []byte("hello ")
+fmt.Println(string(strconv.AppendBool(dst, true)))     // hello true
+fmt.Println(string(strconv.AppendInt(dst, -42, 16)))   // hello -2a
+fmt.Println(string(strconv.AppendQuote(dst, "world"))) // hello "world"
+```
