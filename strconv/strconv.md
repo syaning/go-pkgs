@@ -10,6 +10,8 @@ fmt.Println(strconv.Atoi("123a")) // 0, strconv.ParseInt: parsing "123a": invali
 fmt.Println(strconv.Itoa(123))    // 123
 ```
 
+实际上，`Atoi`和`Itoa`分别调用了`ParseInt`和`FormatInt`方法。
+
 ## format 和 parse
 
 format和parse是两组相反的方法，用于string和其它类型之间的相互转化。相关方法有：
@@ -57,6 +59,9 @@ fmt.Println(strconv.ParseUint("42", 16, 32))  // 66 <nil>
 `ParseUint`与`ParseInt`类似。
 
 ## IsGraphic 和 IsPrint
+
+- func IsGraphic(r rune) bool
+- func IsPrint(r rune) bool
 
 ## quote 和 unquote
 
