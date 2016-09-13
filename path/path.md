@@ -130,3 +130,9 @@ fmt.Println(path.Ext("a/b/c.txt")) // .txt
 ```
 
 ## Match
+
+该方法用于路径的模式匹配，例如：
+
+```go
+fmt.Println(path.Match("test/*", "test/ab"))  // true <nil>
+```
