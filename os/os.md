@@ -76,3 +76,99 @@ fmt.Println(os.ModePerm.String())        // -rwxrwxrwx
 fmt.Println(os.ModeDir | os.ModeSymlink) // dL---------
 ```
 
+## 环境变量
+
+`os`包提供了对环境变量的一些操作，包括：
+
+- func Environ() []string
+- func Getenv(key string) string
+- func LookupEnv(key string) (string, bool)
+- func Setenv(key, value string) error
+- func Unsetenv(key string) error
+- func Clearenv()
+- func ExpandEnv(s string) string
+
+例如：
+
+```go
+key := "hello_go"
+os.Setenv(key, "hello-go")
+fmt.Println(os.Getenv(key))                           // hello-go
+fmt.Println(os.LookupEnv(key))                        // hello-go true
+fmt.Println(os.ExpandEnv("the value is ${hello_go}")) // the value is hello-go
+fmt.Println(os.ExpandEnv("the value is $hello_go"))   // the value is hello-go
+```
+
+对于环境变量的获取以及修改操作都是调用了`syscall`包中的方法。
+
+对于`ExpandEnv`方法，它是将一个字符串中的`${var}`或`$var`进行替换，例如会将`${path}`或`$path`替换为环境变量`path`的值。它实际上是调用了`Expand`方法：
+
+```go
+func ExpandEnv(s string) string {
+    return Expand(s, Getenv)
+}
+```
+
+`Expand`方法的签名如下：
+
+```go
+func Expand(s string, mapping func(string) string) string
+```
+
+它是将字符串`s`中的变量进行替换，替换规则由函数`mapping`来确定。例如：
+
+```go
+func mapping(s string) string {
+    if s == "a" {
+        return "b"
+    } else {
+        return "a"
+    }
+}
+
+func main() {
+    fmt.Println(os.Expand("${a} ${b}", mapping)) // b a
+}
+```
+
+## methods (temp)
+
+func Chdir(dir string) error
+func Chmod(name string, mode FileMode) error
+func Chown(name string, uid, gid int) error
+func Chtimes(name string, atime time.Time, mtime time.Time) error
+
+
+func Exit(code int)
+
+
+func Getegid() int
+
+func Geteuid() int
+func Getgid() int
+func Getgroups() ([]int, error)
+func Getpagesize() int
+func Getpid() int
+func Getppid() int
+func Getuid() int
+func Getwd() (dir string, err error)
+func Hostname() (name string, err error)
+func IsExist(err error) bool
+func IsNotExist(err error) bool
+func IsPathSeparator(c uint8) bool
+func IsPermission(err error) bool
+func Lchown(name string, uid, gid int) error
+func Link(oldname, newname string) error
+
+func Mkdir(name string, perm FileMode) error
+func MkdirAll(path string, perm FileMode) error
+func NewSyscallError(syscall string, err error) error
+func Readlink(name string) (string, error)
+func Remove(name string) error
+func RemoveAll(path string) error
+func Rename(oldpath, newpath string) error
+func SameFile(fi1, fi2 FileInfo) bool
+
+func Symlink(oldname, newname string) error
+func TempDir() string
+func Truncate(name string, size int64) error
