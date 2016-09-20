@@ -131,6 +131,71 @@ func main() {
 }
 ```
 
+## errors
+
+变量有：
+
+```go
+var (
+    ErrInvalid    = errors.New("invalid argument") // methods on File will return this error when the receiver is nil
+    ErrPermission = errors.New("permission denied")
+    ErrExist      = errors.New("file already exists")
+    ErrNotExist   = errors.New("file does not exist")
+)
+```
+
+类型有：
+
+```go
+type PathError struct {
+    Op   string
+    Path string
+    Err  error
+}
+
+type LinkError struct {
+    Op  string
+    Old string
+    New string
+    Err error
+}
+
+type SyscallError struct {
+    Syscall string
+    Err     error
+}
+```
+
+通过`NewSyscallError(syscall string, err error)`可以新建一个系统调用错误。
+
+其它相关方法有：
+
+- func IsExist(err error) bool
+- func IsNotExist(err error) bool
+- func IsPermission(err error) bool
+
+分别用来判断一个错误是否是“文件已经存在”、“文件不存在”、“权限错误”，例如：
+
+```go
+fmt.Println(os.IsExist(os.ErrExist))           // true
+fmt.Println(os.IsNotExist(os.ErrNotExist))     // true
+fmt.Println(os.IsPermission(os.ErrPermission)) // true
+```
+
+## 其它系统调用
+
+- func Getpid() int
+- func Getppid() int
+- func Getgid() int
+- func Getegid() int
+- func Getuid() int
+- func Geteuid() int
+- func Getgroups() ([]int, error)
+- func Exit(code int)
+- func Getpagesize() int
+- func Getwd() (dir string, err error)
+- func Hostname() (name string, err error)
+
 ## methods (temp)
 
 func Chdir(dir string) error
@@ -138,31 +203,14 @@ func Chmod(name string, mode FileMode) error
 func Chown(name string, uid, gid int) error
 func Chtimes(name string, atime time.Time, mtime time.Time) error
 
-
-func Exit(code int)
-
-
-func Getegid() int
-
-func Geteuid() int
-func Getgid() int
-func Getgroups() ([]int, error)
-func Getpagesize() int
-func Getpid() int
-func Getppid() int
-func Getuid() int
-func Getwd() (dir string, err error)
-func Hostname() (name string, err error)
-func IsExist(err error) bool
-func IsNotExist(err error) bool
 func IsPathSeparator(c uint8) bool
-func IsPermission(err error) bool
+
 func Lchown(name string, uid, gid int) error
 func Link(oldname, newname string) error
 
 func Mkdir(name string, perm FileMode) error
 func MkdirAll(path string, perm FileMode) error
-func NewSyscallError(syscall string, err error) error
+
 func Readlink(name string) (string, error)
 func Remove(name string) error
 func RemoveAll(path string) error
