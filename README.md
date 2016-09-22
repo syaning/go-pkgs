@@ -2,6 +2,7 @@
 
 - [errors](./errors/errors.md)
 - [io](./io/io.md)
+- [bufio](./bufio/bufio.md)
 - [bytes](./bytes/bytes.md)
 - [strings](./strings/strings.md)
 - [strconv](./strconv/strconv.md)
