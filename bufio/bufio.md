@@ -181,3 +181,81 @@ fmt.Println(string(p)) // 01234
 `WriteTo`将数据写入到一个Writer中，因此`bufio.Reader`实现了`io.WriterTo`接口。
 
 ## Writer
+
+`bufio.Writer`对`io.Writer`进行了包装，提供了缓冲区功能。定义如下：
+
+```go
+type Writer struct {
+    err error
+    buf []byte // 缓冲区
+    n   int    // 缓冲区的可用数据量
+    wr  io.Writer
+}
+```
+
+通过如下方法可以创建新的Writer:
+
+- func NewWriter(w io.Writer) *Writer
+- func NewWriterSize(w io.Writer, size int) *Writer
+
+### write
+
+写操作相关方法有：
+
+- func (b *Writer) Write(p []byte) (nn int, err error)
+- func (b *Writer) WriteByte(c byte) error
+- func (b *Writer) WriteRune(r rune) (size int, err error)
+- func (b *Writer) WriteString(s string) (int, error)
+
+其中，`Write`方法源码为：
+
+```go
+func (b *Writer) Write(p []byte) (nn int, err error) {
+    // b.Available() 的值为 len(b.buf) - b.n
+    // 只要p的大小大于缓冲区的可用大小，则执行循环
+    for len(p) > b.Available() && b.err == nil {
+        var n int
+        if b.Buffered() == 0 {
+            // 如果p的大小大于缓冲区的可用大小，且缓冲区为空
+            // 则数据直接写入，无需先拷贝到缓冲区
+            n, b.err = b.wr.Write(p)
+        } else {
+            // 将数据拷贝到缓冲区，然后通过flush操作写入缓冲区数据
+            n = copy(b.buf[b.n:], p)
+            b.n += n
+            b.flush()
+        }
+        nn += n
+        // 剩余待写入数据
+        p = p[n:]
+    }
+    if b.err != nil {
+        return nn, b.err
+    }
+    // 此时p的大小小于等于缓冲区大小，因此将数据拷贝到缓冲区
+    n := copy(b.buf[b.n:], p)
+    b.n += n
+    nn += n
+    return nn, nil
+}
+```
+
+### 其它操作
+
+- func (b *Writer) Available() int
+- func (b *Writer) Buffered() int
+- func (b *Writer) Flush() error
+- func (b *Writer) ReadFrom(r io.Reader) (n int64, err error)
+- func (b *Writer) Reset(w io.Writer)
+
+`Available()`返回的是缓冲区中的可用大小：
+
+```go
+func (b *Writer) Available() int { return len(b.buf) - b.n }
+```
+
+`Buffered()`返回的是缓冲区中已经缓存的数据大小：
+
+```go
+func (b *Writer) Buffered() int { return b.n }
+```
