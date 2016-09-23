@@ -259,3 +259,18 @@ func (b *Writer) Available() int { return len(b.buf) - b.n }
 ```go
 func (b *Writer) Buffered() int { return b.n }
 ```
+
+## ReadWriter
+
+`bufio.ReadWriter`实现了`io.ReadWriter`接口，同时包含了一个Reader和一个Writer：
+
+```go
+type ReadWriter struct {
+    *Reader
+    *Writer
+}
+
+func NewReadWriter(r *Reader, w *Writer) *ReadWriter {
+    return &ReadWriter{r, w}
+}
+```
