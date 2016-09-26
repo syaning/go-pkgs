@@ -196,6 +196,56 @@ fmt.Println(os.IsPermission(os.ErrPermission)) // true
 - func Getwd() (dir string, err error)
 - func Hostname() (name string, err error)
 
+## File
+
+os包提供了平台无关的文件操作。即对于不同的操作系统，它有着不同的具体实现，但是对外的接口是一致的。
+
+文件的创建和打开相关的方法如下：
+
+- func Create(name string) (*File, error)
+- func NewFile(fd uintptr, name string) *File
+- func Open(name string) (*File, error)
+- func OpenFile(name string, flag int, perm FileMode) (*File, error)
+
+其中，`NewFile`是根据文件描述符和文件名来返回一个指针，实际上并没有真正创建文件。
+
+`OpenFile`根据文件名、flag和权限来打开或者创建文件，并通过`NewFile`来返回文件指针。其中flag可取值为：
+
+```go
+// Flags to OpenFile wrapping those of the underlying system. Not all
+// flags may be implemented on a given system.
+const (
+    O_RDONLY int = syscall.O_RDONLY // open the file read-only.
+    O_WRONLY int = syscall.O_WRONLY // open the file write-only.
+    O_RDWR   int = syscall.O_RDWR   // open the file read-write.
+    O_APPEND int = syscall.O_APPEND // append data to the file when writing.
+    O_CREATE int = syscall.O_CREAT  // create a new file if none exists.
+    O_EXCL   int = syscall.O_EXCL   // used with O_CREATE, file must not exist
+    O_SYNC   int = syscall.O_SYNC   // open for synchronous I/O.
+    O_TRUNC  int = syscall.O_TRUNC  // if possible, truncate file when opened.
+)
+```
+
+`Create`调用了`OpenFile`，来创建一个文件：
+
+```go
+// 以读写模式来创建新文件
+// 如果文件已经存在，则会清空原有文件
+func Create(name string) (*File, error) {
+    return OpenFile(name, O_RDWR|O_CREATE|O_TRUNC, 0666)
+}
+```
+
+`Open`调用了`OpenFile`，以只读模式打开一个文件：
+
+```go
+// 以只读模式打开文件
+// 如果文件不存在，会报错
+func Open(name string) (*File, error) {
+    return OpenFile(name, O_RDONLY, 0)
+}
+```
+
 ## methods (temp)
 
 func Chdir(dir string) error
