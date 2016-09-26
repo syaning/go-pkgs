@@ -182,20 +182,6 @@ fmt.Println(os.IsNotExist(os.ErrNotExist))     // true
 fmt.Println(os.IsPermission(os.ErrPermission)) // true
 ```
 
-## 其它系统调用
-
-- func Getpid() int
-- func Getppid() int
-- func Getgid() int
-- func Getegid() int
-- func Getuid() int
-- func Geteuid() int
-- func Getgroups() ([]int, error)
-- func Exit(code int)
-- func Getpagesize() int
-- func Getwd() (dir string, err error)
-- func Hostname() (name string, err error)
-
 ## File
 
 os包提供了平台无关的文件操作。即对于不同的操作系统，它有着不同的具体实现，但是对外的接口是一致的。
@@ -246,27 +232,68 @@ func Open(name string) (*File, error) {
 }
 ```
 
-## methods (temp)
+### read
 
-func Chdir(dir string) error
-func Chmod(name string, mode FileMode) error
-func Chown(name string, uid, gid int) error
-func Chtimes(name string, atime time.Time, mtime time.Time) error
+- func (f *File) Read(b []byte) (n int, err error)
+- func (f *File) ReadAt(b []byte, off int64) (n int, err error)
+- func (f *File) Readdir(n int) ([]FileInfo, error)
+- func (f *File) Readdirnames(n int) (names []string, err error)
 
-func IsPathSeparator(c uint8) bool
+如果文件是一个目录的话，`Readdir(n int)`可以读取该目录下文件的信息。如果参数`n`大于0，则会返回前`n`个文件的信息，否则返回所有子文件的信息。
 
-func Lchown(name string, uid, gid int) error
-func Link(oldname, newname string) error
+`Readdirnames`会返回子文件的文件名，参数限定和`Readdir`一致。
 
-func Mkdir(name string, perm FileMode) error
-func MkdirAll(path string, perm FileMode) error
+### write
 
-func Readlink(name string) (string, error)
-func Remove(name string) error
-func RemoveAll(path string) error
-func Rename(oldpath, newpath string) error
-func SameFile(fi1, fi2 FileInfo) bool
+- func (f *File) Write(b []byte) (n int, err error)
+- func (f *File) WriteAt(b []byte, off int64) (n int, err error)
+- func (f *File) WriteString(s string) (n int, err error)
 
-func Symlink(oldname, newname string) error
-func TempDir() string
-func Truncate(name string, size int64) error
+### 其它操作
+
+- func (f *File) Chdir() error
+- func (f *File) Chmod(mode FileMode) error
+- func (f *File) Chown(uid, gid int) error
+- func (f *File) Close() error
+- func (f *File) Fd() uintptr
+- func (f *File) Name() string
+- func (f *File) Sync() error
+- func (f *File) Stat() (FileInfo, error)
+- func (f *File) Seek(offset int64, whence int) (ret int64, err error)
+- func (f *File) Truncate(size int64) error
+
+其中`Sync`方法会将写入该文件的数据从内存持久化到磁盘上。
+
+## 其它系统调用
+
+- func Getpid() int
+- func Getppid() int
+- func Getgid() int
+- func Getegid() int
+- func Getuid() int
+- func Geteuid() int
+- func Getgroups() ([]int, error)
+- func Exit(code int)
+- func Getpagesize() int
+- func Getwd() (dir string, err error)
+- func Hostname() (name string, err error)
+
+## 其它方法
+
+- func Chdir(dir string) error
+- func Chmod(name string, mode FileMode) error
+- func Chown(name string, uid, gid int) error
+- func Chtimes(name string, atime time.Time, mtime time.Time) error
+- func IsPathSeparator(c uint8) bool
+- func Lchown(name string, uid, gid int) error
+- func Link(oldname, newname string) error
+- func Mkdir(name string, perm FileMode) error
+- func MkdirAll(path string, perm FileMode) error
+- func Readlink(name string) (string, error)
+- func Remove(name string) error
+- func RemoveAll(path string) error
+- func Rename(oldpath, newpath string) error
+- func SameFile(fi1, fi2 FileInfo) bool
+- func Symlink(oldname, newname string) error
+- func TempDir() string
+- func Truncate(name string, size int64) error
