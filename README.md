@@ -13,3 +13,4 @@
 - [os](./os/os.md)
 - [path](./path/path.md)
     + [filepath](./path/filepath.md)
+- [hash](./hash/hash.md)
