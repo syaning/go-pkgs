@@ -14,3 +14,4 @@
 - [path](./path/path.md)
     + [filepath](./path/filepath.md)
 - [hash](./hash/hash.md)
+    + [adler32](./hash/adler32.md)
