@@ -4,14 +4,14 @@
 
 ### CanonicalHeaderKey
 
-与`net/textproto.CanonicalMIMEHeaderKey`效果相同。
+与`textproto.CanonicalMIMEHeaderKey`效果相同。
 
 ## Header
 
-与`net/textproto.MIMEHeader`类似，本质上也是一个`map[string][]string`。同样拥有`Add`，`Set`，`Get`，`Del`方法，此外还有`Write`和`WriteSubset`方法。
+与`textproto.MIMEHeader`类似，本质上也是一个`map[string][]string`。同样拥有`Add`，`Set`，`Get`，`Del`方法，此外还有`Write`和`WriteSubset`方法。
 
 ```go
-h := make(http.Header)
+h := http.Header{}
 h.Set("Content-Type", "application/json")
 h.Add("Accept-Encoding", "gzip")
 h.Add("Accept-Encoding", "deflate")
