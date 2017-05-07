@@ -2,10 +2,10 @@
 
 ## Userinfo
 
-是对URL中用户名和密码的封装。通过如下两个方法可以反创建Userinfo：
+是对URL中用户名和密码的封装。通过如下两个方法可以创建Userinfo：
 
-- func User(username string) *Userinfo
-- func UserPassword(username, password string) *Userinfo
+- User(username string) *Userinfo
+- UserPassword(username, password string) *Userinfo
 
 例如：
 
