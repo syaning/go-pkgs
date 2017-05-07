@@ -26,5 +26,7 @@ type MIMEHeader map[string][]string
 
 - Add(key, value string)
 - Set(key, value string)
-- Get(key string)：返回第一个值，如果需要返回多个值，直接使用map来取值
+- Get(key string) string：返回第一个值，如果需要返回多个值，直接使用map来取值
 - Del(key string)
+
+这几个方法都会先使用`CanonicalMIMEHeaderKey`对`key`进行标准化处理。
