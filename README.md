@@ -15,3 +15,5 @@
     + [filepath](./path/filepath.md)
 - [hash](./hash/hash.md)
     + [adler32](./hash/adler32.md)
+- net
+    + [textproto](./net/textproto)
