@@ -39,7 +39,7 @@ _, ok := g.(http.Handler)
 fmt.Println(ok) // true
 ```
 
-## Cookie
+## Cookie 和 CookieJar
 
 ```go
 // This implementation is done according to RFC 6265:
@@ -78,8 +78,6 @@ c := http.Cookie{
 }
 fmt.Println(c.String()) // "token=abcd1234; Path=/; Max-Age=3600"
 ```
-
-## CookieJar
 
 `CookieJar`是一个接口：
 
@@ -127,4 +125,53 @@ h.WriteSubset(os.Stdout, map[string]bool{
 })
 // Cache-Control: no-cache
 // Content-Type: application/json
+```
+
+## Request
+
+`Request`是对HTTP的封装，包括作为服务器接收到的请求以及作为客户端发出的请求。相关的字段可以参看[http.Request](https://golang.org/pkg/net/http/#Request)。
+
+作为客户端发出的请求时，有以下方法：
+
+- AddCookie(c *Cookie)
+- SetBasicAuth(username, password string)
+
+作为服务器接收的请求时，有以下方法：
+
+- BasicAuth() (username, password string, ok bool)
+- Cookie(name string) (*Cookie, error)
+- Cookies() []*Cookie
+- FormFile(key string) (multipart.File, *multipart.FileHeader, error)
+- FormValue(key string) string
+- PostFormValue(key string) string
+- Referer() string
+- UserAgent() string
+
+为了获取表单的参数值，需要先调用`ParseForm`或者`ParseMultipartForm`，例如：
+
+```go
+http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    r.ParseForm()
+
+    fmt.Println("UserAgent:", r.UserAgent())
+    fmt.Println(r.Form)
+    fmt.Println(r.PostForm)
+
+    w.Write([]byte("hello world"))
+})
+http.ListenAndServe(":8080", nil)
+```
+
+执行：
+
+```sh
+curl -X POST -d "hello=world" "localhost:8080/?a=b&c=d"
+```
+
+输出为：
+
+```
+UserAgent: curl/7.51.0
+map[hello:[world] a:[b] c:[d]]
+map[hello:[world]]
 ```
