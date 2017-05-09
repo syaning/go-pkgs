@@ -215,3 +215,5 @@ fmt.Println(string(body))
 事实上，`Get`，`Head`，`Post`，`PostForm`都是构建好`Request`对象后，调用`Do`方法。
 
 有一个全局的`DefaultClient`对象，全局的`Get`，`Head`，`Post`，`PostForm`其实是调用了`DefaultClient`的相应方法。
+
+如果只是发送简单的请求，直接用`http.Get`等这些方法就可以了，如果需要定制header等行为，则需要显式使用`client.Do(req)`。
