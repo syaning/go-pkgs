@@ -175,3 +175,29 @@ UserAgent: curl/7.51.0
 map[hello:[world] a:[b] c:[d]]
 map[hello:[world]]
 ```
+
+## Response
+
+当作为客户端发请求时，服务器的返回就是一个`Request`。具体字段可以参看[http.Response](https://golang.org/pkg/net/http/#Response)。
+
+一下几个HTTP方法都可以得到一个`Response`：
+
+- Get(url string) (resp *Response, err error)
+- Head(url string) (resp *Response, err error)
+- Post(url string, contentType string, body io.Reader) (resp *Response, err error)
+- PostForm(url string, data url.Values) (resp *Response, err error)
+
+例如：
+
+```go
+resp, err := http.Get("https://httpbin.org/user-agent")
+if err != nil {
+    fmt.Println(err)
+    return
+}
+defer resp.Body.Close()
+
+body, err := ioutil.ReadAll(resp.Body)
+fmt.Println(string(body))
+// { "user-agent": "Go-http-client/1.1" }
+```
