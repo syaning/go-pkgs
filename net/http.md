@@ -201,3 +201,17 @@ body, err := ioutil.ReadAll(resp.Body)
 fmt.Println(string(body))
 // { "user-agent": "Go-http-client/1.1" }
 ```
+
+## Client
+
+`Client`作为客户端发请求。有如下方法：
+
+- func (c *Client) Do(req *Request) (*Response, error)
+- func (c *Client) Get(url string) (resp *Response, err error)
+- func (c *Client) Head(url string) (resp *Response, err error)
+- func (c *Client) Post(url string, contentType string, body io.Reader) (resp *Response, err error)
+- func (c *Client) PostForm(url string, data url.Values) (resp *Response, err error)
+
+事实上，`Get`，`Head`，`Post`，`PostForm`都是构建好`Request`对象后，调用`Do`方法。
+
+有一个全局的`DefaultClient`对象，全局的`Get`，`Head`，`Post`，`PostForm`其实是调用了`DefaultClient`的相应方法。
