@@ -216,4 +216,47 @@ fmt.Println(string(body))
 
 有一个全局的`DefaultClient`对象，全局的`Get`，`Head`，`Post`，`PostForm`其实是调用了`DefaultClient`的相应方法。
 
-如果只是发送简单的请求，直接用`http.Get`等这些方法就可以了，如果需要定制header等行为，则需要显式使用`client.Do(req)`。
+如果只是发送简单的请求，直接用`http.Get`等这些方法就可以了，如果需要定制header等行为，则需要显式使用`client.Do(req)`，例如：
+
+```go
+client := &http.Client{
+    CheckRedirect: redirectPolicyFunc,
+}
+
+resp, err := client.Get("http://example.com")
+// ...
+
+req, err := http.NewRequest("GET", "http://example.com", nil)
+// ...
+req.Header.Add("If-None-Match", `W/"wyzzy"`)
+resp, err := client.Do(req)
+// ...
+```
+
+## Transport
+
+`Transport`是比`Client`更底层的东西，如果需要控制proxy等更具体的行为，需要使用`Transport`，例如：
+
+```go
+tr := &http.Transport{
+    MaxIdleConns:       10,
+    IdleConnTimeout:    30 * time.Second,
+    DisableCompression: true,
+}
+client := &http.Client{Transport: tr}
+resp, err := client.Get("https://example.com")
+```
+
+## ResponseWriter
+
+当作为服务器时，接收到请求后会进行处理，然后发送回复。`ResponseWriter`是一个接口，就是对服务器回复的抽象。
+
+```go
+type ResponseWriter interface {
+    Header() Header
+
+    Write([]byte) (int, error)
+
+    WriteHeader(int)
+}
+```
