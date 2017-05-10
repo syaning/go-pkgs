@@ -260,3 +260,18 @@ type ResponseWriter interface {
     WriteHeader(int)
 }
 ```
+
+## ServeMux
+
+可以认为`ServeMux`是一个简单的路由器，当接收到请求时，它会将请求分发给相应的`Handler`来处理。
+
+通过`NewServeMux()`可以创建一个新的`ServeMux`。有一个全局的默认`ServeMux`：`DefaultServeMux`。
+
+有如下方法：
+
+- Handle(pattern string, handler Handler)：注册Handler
+- HandleFunc(pattern string, handler func(ResponseWriter, *Request))：注册处理函数
+- Handler(r *Request) (h Handler, pattern string)：返回响应request对象应该使用的Handler
+- ServeHTTP(w ResponseWriter, r *Request)：实现了该方法，因此ServeMux本身也是Handler，该方法先调用`Handler(r *Request)`得到应当使用的Handler，然后调用该Handler的ServeHTTP方法
+
+全局的`Handle`和`HandleFunc`方法分别调用了`DefaultServeMux`的相应方法。
