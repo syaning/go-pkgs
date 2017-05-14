@@ -160,7 +160,7 @@ fmt.Println(d.Location()) // America/Los_Angeles
 - `Before`，`After`和`Equal`方法用来比较时间先后
 - `Add`方法可以用来加一个`Duration`得到一个新的时间
 - `Sub`为两个时间相减得到一个`Duration`
-- `AddDate`可以加相应的年月日数量得到一个新的时间
+- `AddDate`可以加相应数量的年月日得到一个新的时间
 
 ```go
 d1 := time.Now()
@@ -176,5 +176,71 @@ fmt.Println(d2.Sub(d1))    // 10s
 
 fmt.Println(d1) // 2017-05-13 22:14:49.170798749 +0800 CST
 fmt.Println(d5) // 2018-07-16 22:14:49.170798749 +0800 CST
+```
+
+### 格式化
+
+在Go语言中，日期的格式化与其它语言的YYYYMMDD形式差别很大，用的是具体描述形式的形式，参考日期为`Mon Jan 2 15:04:05 MST 2006`。一些日期格式常量如下：
+
+```go
+const (
+        ANSIC       = "Mon Jan _2 15:04:05 2006"
+        UnixDate    = "Mon Jan _2 15:04:05 MST 2006"
+        RubyDate    = "Mon Jan 02 15:04:05 -0700 2006"
+        RFC822      = "02 Jan 06 15:04 MST"
+        RFC822Z     = "02 Jan 06 15:04 -0700" // RFC822 with numeric zone
+        RFC850      = "Monday, 02-Jan-06 15:04:05 MST"
+        RFC1123     = "Mon, 02 Jan 2006 15:04:05 MST"
+        RFC1123Z    = "Mon, 02 Jan 2006 15:04:05 -0700" // RFC1123 with numeric zone
+        RFC3339     = "2006-01-02T15:04:05Z07:00"
+        RFC3339Nano = "2006-01-02T15:04:05.999999999Z07:00"
+        Kitchen     = "3:04PM"
+        // Handy time stamps.
+        Stamp      = "Jan _2 15:04:05"
+        StampMilli = "Jan _2 15:04:05.000"
+        StampMicro = "Jan _2 15:04:05.000000"
+        StampNano  = "Jan _2 15:04:05.000000000"
+)
+```
+
+通过`Format`方法可以格式化日期为字符串形式，例如：
+
+```go
+d := time.Now()
+
+fmt.Println(d.Format(time.ANSIC))       // Sun May 14 10:31:27 2017
+fmt.Println(d.Format(time.UnixDate))    // Sun May 14 10:31:27 CST 2017
+fmt.Println(d.Format(time.RubyDate))    // Sun May 14 10:31:27 +0800 2017
+fmt.Println(d.Format(time.RFC822))      // 14 May 17 10:31 CST
+fmt.Println(d.Format(time.RFC822Z))     // 14 May 17 10:31 +0800
+fmt.Println(d.Format(time.RFC850))      // Sunday, 14-May-17 10:31:27 CST
+fmt.Println(d.Format(time.RFC1123))     // Sun, 14 May 2017 10:31:27 CST
+fmt.Println(d.Format(time.RFC1123Z))    // Sun, 14 May 2017 10:31:27 +0800
+fmt.Println(d.Format(time.RFC3339))     // 2017-05-14T10:31:27+08:00
+fmt.Println(d.Format(time.RFC3339Nano)) // 2017-05-14T10:31:27.67117435+08:00
+fmt.Println(d.Format(time.Kitchen))     // 10:31AM
+fmt.Println(d.Format(time.Stamp))       // May 14 10:31:27
+fmt.Println(d.Format(time.StampMilli))  // May 14 10:31:27.671
+fmt.Println(d.Format(time.StampMicro))  // May 14 10:31:27.671174
+fmt.Println(d.Format(time.StampNano))   // May 14 10:31:27.671174350
+
+fmt.Println(d.Format("2006-01-02 15:04:05")) // 2017-05-14 10:31:27
+```
+
+与`Format`方法相反，`Parse`方法可以将字符串转坏为时间。例如：
+
+```go
+s := time.Now().Format(time.ANSIC)
+fmt.Println(s) // Sun May 14 10:38:27 2017
+
+d, _ := time.Parse(time.ANSIC, s)
+fmt.Println(d) // 2017-05-14 10:38:27 +0000 UTC
+
+d, _ = time.Parse("2006-01-02 15:04:05", "2000-01-01 00:00:00")
+fmt.Println(d) // 2000-01-01 00:00:00 +0000 UTC
+
+local, _ := time.LoadLocation("Local")
+d, _ = time.ParseInLocation("2006-01-02 15:04:05", "2000-01-01 00:00:00", local)
+fmt.Println(d) // 2000-01-01 00:00:00 +0800 CST
 ```
 
