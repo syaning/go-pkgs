@@ -227,7 +227,7 @@ fmt.Println(d.Format(time.StampNano))   // May 14 10:31:27.671174350
 fmt.Println(d.Format("2006-01-02 15:04:05")) // 2017-05-14 10:31:27
 ```
 
-与`Format`方法相反，`Parse`方法可以将字符串转坏为时间。例如：
+与`Format`方法相反，`Parse`方法可以将字符串转换为时间。例如：
 
 ```go
 s := time.Now().Format(time.ANSIC)
