@@ -244,3 +244,78 @@ d, _ = time.ParseInLocation("2006-01-02 15:04:05", "2000-01-01 00:00:00", local)
 fmt.Println(d) // 2000-01-01 00:00:00 +0800 CST
 ```
 
+## Timer
+
+`Timer`是一个定时器，结构如下：
+
+```go
+type Timer struct {
+    C <-chan Time
+    // contains filtered or unexported fields
+}
+```
+
+`Timer`必须由`NewTimer`或者`AfterFunc`方法创建。`Timer`本身有`Reset`和`Stop`方法，用来重置活着取消定时器。例如：
+
+```go
+t1 := time.NewTimer(2 * time.Second)
+<-t1.C
+fmt.Println("timer1 expired")
+
+t2 := time.NewTimer(2 * time.Second)
+t2.Stop()
+fmt.Println("timer2 stoped")
+
+f := func() {
+    fmt.Println("function executed")
+}
+time.AfterFunc(2*time.Second, f)
+// 确保主goroutine比子goroutine晚退出
+// 不然不会打印"function executed"
+time.Sleep(3 * time.Second)
+
+t3 := time.NewTimer(1 * time.Millisecond)
+t3.Reset(2 * time.Second)
+<-t3.C
+fmt.Println("timer3 expired")
+```
+
+## 其它方法
+
+### Sleep
+
+暂停一段时间，例如：
+
+```go
+fmt.Println("hello")
+time.Sleep(time.Second)
+fmt.Println("world")
+```
+
+### After
+
+该函数参数为一个`Duration`，返回一个`<- chan Time`。等待结束后，chnnel的输出值为当前时间。例如：
+
+```go
+fmt.Println(time.Now()) // 2017-05-15 23:20:29.196462261 +0800 CST
+c := time.After(2 * time.Second)
+fmt.Println(<-c) // 2017-05-15 23:20:31.201923491 +0800 CST
+```
+
+### Tick
+
+该方法与`After`方法类似，也是参数为一个`Duration`，返回一个`<- chan Time`。不过是每过间隔时间channel中就会输出数据，即当前时间。例如：
+
+```go
+c := time.Tick(1 * time.Second)
+for now := range c {
+    fmt.Printf("%v\n", now)
+}
+
+// 2017-05-15 23:23:21.318468768 +0800 CST
+// 2017-05-15 23:23:22.318531626 +0800 CST
+// 2017-05-15 23:23:23.318468491 +0800 CST
+// 2017-05-15 23:23:24.318512446 +0800 CST
+// 2017-05-15 23:23:25.313375396 +0800 CST
+// ...
+```
