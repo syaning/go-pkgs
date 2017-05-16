@@ -1,5 +1,5 @@
 {
-  "plugins": ["github", "edit-link"],
+  "plugins": ["github", "edit-link", "-fontsettings"],
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/syaning/go-pkgs"
