@@ -9,5 +9,5 @@
 如果本书内容对你有所帮助，不妨考虑赞助我一杯咖啡。谢谢～
 
 <div style="text-align: center;">
-    <img src="./asset/wechat.jpeg" alt="" style="max-height: 300px; border: 1px solid #eee;">
+    <img src="./asset/wechat.png" alt="" style="max-height: 300px; border: 1px solid #eee;">
 </div>
