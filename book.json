@@ -1,8 +1,12 @@
 {
-  "plugins": ["github"],
+  "plugins": ["github", "edit-link"],
   "pluginsConfig": {
     "github": {
       "url": "https://github.com/syaning/go-pkgs"
+    },
+    "edit-link": {
+      "base": "https://github.com/syaning/go-pkgs/edit/master",
+      "label": "Edit This Page"
     }
   },
   "links": {
