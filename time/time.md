@@ -239,8 +239,7 @@ fmt.Println(d) // 2017-05-14 10:38:27 +0000 UTC
 d, _ = time.Parse("2006-01-02 15:04:05", "2000-01-01 00:00:00")
 fmt.Println(d) // 2000-01-01 00:00:00 +0000 UTC
 
-local, _ := time.LoadLocation("Local")
-d, _ = time.ParseInLocation("2006-01-02 15:04:05", "2000-01-01 00:00:00", local)
+d, _ = time.ParseInLocation("2006-01-02 15:04:05", "2000-01-01 00:00:00", time.Local)
 fmt.Println(d) // 2000-01-01 00:00:00 +0800 CST
 ```
 
