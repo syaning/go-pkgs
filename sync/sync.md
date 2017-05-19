@@ -113,3 +113,31 @@ type Locker interface {
     Unlock()
 }
 ```
+
+## Mutex
+
+`Mutex`提供了互斥锁的机制。例如：
+
+```go
+var mutex sync.Mutex
+mutex.Lock()
+// ...
+mutex.Unlock()
+```
+
+也可以通过`defer`的写法，例如：
+
+```go
+var mutex sync.Mutex
+
+func fn() {
+    mutex.Lock()
+    defer mutex.Unlock()
+
+    // ...
+}
+```
+
+## RWMutex
+
+`RWMutex`同时提供了共享锁和互斥锁的机制。其`Lock`和`Unlock`依然是互斥锁的操作，另外`RLock`和`RUnlock`是共享锁。通过其`Locker`方法可以获取锁对象。
