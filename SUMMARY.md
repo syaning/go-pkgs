@@ -31,4 +31,5 @@
 - crypto
     + [md5](./crypto/md5.md)
     + [sha256](./crypto/sha256.md)
+    + [hmac](./crypto/hmac.md)
 
