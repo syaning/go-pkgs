@@ -28,4 +28,6 @@
     + [base64](./encoding/base64.md)
     + [hex](./encoding/hex.md)
     + [json](./encoding/json.md)
+- crypto
+    + [md5](./crypto/md5.md)
 
