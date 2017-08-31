@@ -26,5 +26,6 @@
 - encoding
     + [base32](./encoding/base32.md)
     + [base64](./encoding/base64.md)
+    + [hex](./encoding/hex.md)
     + [json](./encoding/json.md)
 
