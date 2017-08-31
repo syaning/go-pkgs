@@ -24,5 +24,6 @@
 - [sync](./sync/sync.md)
 - [log](./log/log.md)
 - encoding
+    + [base64](./encoding/base64.md)
     + [json](./encoding/json.md)
 
