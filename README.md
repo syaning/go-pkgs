@@ -5,9 +5,3 @@
 内容持续更新中。写的仓促，难免会有疏漏，欢迎审校以及提PR。
 
 本书所有内容遵循 [CC BY-NC-SA 4.0 许可协议](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode)。
-
-如果本书内容对你有所帮助，不妨考虑赞助我一杯咖啡。谢谢～
-
-<div style="text-align: center;">
-    <img src="./asset/wechat.png" alt="" style="max-height: 300px; border: 1px solid #eee;">
-</div>
