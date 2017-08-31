@@ -30,4 +30,5 @@
     + [json](./encoding/json.md)
 - crypto
     + [md5](./crypto/md5.md)
+    + [sha256](./crypto/sha256.md)
 
