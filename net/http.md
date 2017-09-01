@@ -180,7 +180,7 @@ map[hello:[world]]
 
 当作为客户端发请求时，服务器的返回就是一个`Request`。具体字段可以参看[http.Response](https://golang.org/pkg/net/http/#Response)。
 
-一下几个HTTP方法都可以得到一个`Response`：
+以下几个HTTP方法都可以得到一个`Response`：
 
 - Get(url string) (resp *Response, err error)
 - Head(url string) (resp *Response, err error)
