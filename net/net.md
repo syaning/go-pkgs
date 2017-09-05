@@ -14,27 +14,29 @@ import (
 )
 
 func main() {
-    udpAddr := &net.UDPAddr{
+    addr := &net.UDPAddr{
         IP:   net.ParseIP("127.0.0.1"),
         Port: 8080,
     }
 
-    udpConn, err := net.ListenUDP("udp", udpAddr)
+    conn, err := net.ListenUDP("udp", addr)
     if err != nil {
         fmt.Println("connection error")
         os.Exit(1)
     }
-    defer udpConn.Close()
+    defer conn.Close()
+
+    fmt.Printf("run UDP server on %s\n", conn.LocalAddr())
 
     for {
         data := make([]byte, 1024)
-        n, addr, err := udpConn.ReadFromUDP(data)
+        n, remoteAddr, err := conn.ReadFromUDP(data)
         if err != nil {
             fmt.Println("error while reading data")
         }
 
-        fmt.Printf("%s %s\n", addr, data[:n])
-        udpConn.WriteToUDP([]byte("world"), addr)
+        fmt.Printf("%s %s\n", remoteAddr, data[:n])
+        conn.WriteToUDP([]byte("world"), remoteAddr)
     }
 }
 ```
