@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>container/list | Go语言标准包解析</title>
+    <meta name="description" content="">
+    
+    
+    <link rel="preload" href="/go-pkgs/assets/css/styles.fe7484d0.css" as="style"><link rel="preload" href="/go-pkgs/assets/js/app.fe7484d0.js" as="script"><link rel="preload" href="/go-pkgs/assets/js/7.5ff195c7.js" as="script"><link rel="prefetch" href="/go-pkgs/assets/js/14.f9e1edcd.js"><link rel="prefetch" href="/go-pkgs/assets/css/1.styles.5a8ea794.css"><link rel="prefetch" href="/go-pkgs/assets/js/1.5a8ea794.js"><link rel="prefetch" href="/go-pkgs/assets/css/2.styles.99eb2c41.css"><link rel="prefetch" href="/go-pkgs/assets/js/2.99eb2c41.js"><link rel="prefetch" href="/go-pkgs/assets/js/3.3ba8b41e.js"><link rel="prefetch" href="/go-pkgs/assets/js/4.45a9b36b.js"><link rel="prefetch" href="/go-pkgs/assets/js/5.3cc74dc1.js"><link rel="prefetch" href="/go-pkgs/assets/js/6.760749db.js"><link rel="prefetch" href="/go-pkgs/assets/js/8.bada7560.js"><link rel="prefetch" href="/go-pkgs/assets/js/9.02d5f6a8.js"><link rel="prefetch" href="/go-pkgs/assets/js/10.ef8c01c5.js"><link rel="prefetch" href="/go-pkgs/assets/js/11.1f8351a8.js"><link rel="prefetch" href="/go-pkgs/assets/js/12.7bfed0a7.js"><link rel="prefetch" href="/go-pkgs/assets/js/13.aad6c30f.js"><link rel="prefetch" href="/go-pkgs/assets/js/15.e2eeb8f5.js"><link rel="prefetch" href="/go-pkgs/assets/js/16.f9ee11ce.js"><link rel="prefetch" href="/go-pkgs/assets/js/17.908a31d6.js"><link rel="prefetch" href="/go-pkgs/assets/js/18.7a1df7b7.js"><link rel="prefetch" href="/go-pkgs/assets/js/19.dc583434.js"><link rel="prefetch" href="/go-pkgs/assets/js/20.ccf17788.js"><link rel="prefetch" href="/go-pkgs/assets/js/21.4a01e5ec.js"><link rel="prefetch" href="/go-pkgs/assets/js/22.c3ca65cd.js"><link rel="prefetch" href="/go-pkgs/assets/js/23.8d11c56f.js"><link rel="prefetch" href="/go-pkgs/assets/js/24.1b50e3b4.js"><link rel="prefetch" href="/go-pkgs/assets/js/25.51739cb2.js"><link rel="prefetch" href="/go-pkgs/assets/js/26.33ca2889.js"><link rel="prefetch" href="/go-pkgs/assets/js/27.a258b5a4.js"><link rel="prefetch" href="/go-pkgs/assets/js/28.86f54ae6.js"><link rel="prefetch" href="/go-pkgs/assets/js/29.3dc10855.js"><link rel="prefetch" href="/go-pkgs/assets/js/30.87502924.js"><link rel="prefetch" href="/go-pkgs/assets/js/31.4e990cb9.js"><link rel="prefetch" href="/go-pkgs/assets/js/32.fad9d836.js">
+    <link rel="stylesheet" href="/go-pkgs/assets/css/1.styles.5a8ea794.css"><link rel="stylesheet" href="/go-pkgs/assets/css/2.styles.99eb2c41.css"><link rel="stylesheet" href="/go-pkgs/assets/css/styles.fe7484d0.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/go-pkgs/" class="home-link router-link-active"><!----> <span class="site-name">Go语言标准包解析</span></a> <div class="links" style="max-width:nullpx;"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><a href="https://github.com/syaning/go-pkgs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav></div></header> <div class="sidebar-mask"></div> <div class="sidebar"><nav class="nav-links"><div class="nav-item"><a href="https://github.com/syaning/go-pkgs" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  GitHub
+  <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg></a></div> <!----></nav>  <ul class="sidebar-links"><li><a href="/go-pkgs/" class="sidebar-link">Go语言标准包解析</a></li><li><a href="/go-pkgs/errors/" class="sidebar-link">errors</a></li><li><a href="/go-pkgs/io/" class="sidebar-link">io</a></li><li><a href="/go-pkgs/bufio/" class="sidebar-link">bufio</a></li><li><a href="/go-pkgs/bytes/" class="sidebar-link">bytes</a></li><li><a href="/go-pkgs/strings/" class="sidebar-link">strings</a></li><li><a href="/go-pkgs/strconv/" class="sidebar-link">strconv</a></li><li><a href="/go-pkgs/container/heap.html" class="sidebar-link">container/heap</a></li><li><a href="/go-pkgs/container/list.html" class="active sidebar-link">container/list</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/go-pkgs/container/list.html#element" class="sidebar-link">Element</a></li><li class="sidebar-sub-header"><a href="/go-pkgs/container/list.html#list" class="sidebar-link">List</a></li></ul></li><li><a href="/go-pkgs/container/ring.html" class="sidebar-link">container/ring</a></li><li><a href="/go-pkgs/os/" class="sidebar-link">os</a></li><li><a href="/go-pkgs/path/" class="sidebar-link">path</a></li><li><a href="/go-pkgs/path/filepath.html" class="sidebar-link">path/filepath</a></li><li><a href="/go-pkgs/hash/" class="sidebar-link">hash</a></li><li><a href="/go-pkgs/hash/adler32.html" class="sidebar-link">hash/adler32</a></li><li><a href="/go-pkgs/net/" class="sidebar-link">net</a></li><li><a href="/go-pkgs/net/http.html" class="sidebar-link">net/http</a></li><li><a href="/go-pkgs/net/textproto.html" class="sidebar-link">net/textproto</a></li><li><a href="/go-pkgs/net/url.html" class="sidebar-link">net/url</a></li><li><a href="/go-pkgs/time/" class="sidebar-link">time</a></li><li><a href="/go-pkgs/sync/" class="sidebar-link">sync</a></li><li><a href="/go-pkgs/log/" class="sidebar-link">log</a></li><li><a href="/go-pkgs/encoding/base32.html" class="sidebar-link">encoding/base32</a></li><li><a href="/go-pkgs/encoding/base64.html" class="sidebar-link">encoding/base64</a></li><li><a href="/go-pkgs/encoding/hex.html" class="sidebar-link">encoding/hex</a></li><li><a href="/go-pkgs/encoding/json.html" class="sidebar-link">encoding/json</a></li><li><a href="/go-pkgs/crypto/md5.html" class="sidebar-link">crypto/md5</a></li><li><a href="/go-pkgs/crypto/sha256.html" class="sidebar-link">crypto/sha256</a></li><li><a href="/go-pkgs/crypto/hmac.html" class="sidebar-link">crypto/hmac</a></li><li><a href="/go-pkgs/reflect/" class="sidebar-link">reflect</a></li></ul> </div> <div class="page"> <div class="content"><h1 id="container-list"><a href="#container-list" aria-hidden="true" class="header-anchor">#</a> container/list</h1> <p>list定义了一个双向链表。</p> <h2 id="element"><a href="#element" aria-hidden="true" class="header-anchor">#</a> Element</h2> <p>list的元素定义如下：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">type</span> Element <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Next and previous pointers in the doubly-linked list of elements.</span>
+    <span class="token comment">// The front of the list has prev = nil, and the back has next = nil.</span>
+    next<span class="token punctuation">,</span> prev <span class="token operator">*</span>Element
+
+    <span class="token comment">// The list to which this element belongs.</span>
+    list <span class="token operator">*</span>List
+
+    <span class="token comment">// The contents of this list element.</span>
+    Value <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>Element定义了<code>Next()</code>和<code>Prev()</code>方法，定义如下：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// Next returns the next list element or nil.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>Element<span class="token punctuation">)</span> <span class="token function">Next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span>Element <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> p <span class="token operator">:=</span> e<span class="token punctuation">.</span>next<span class="token punctuation">;</span> e<span class="token punctuation">.</span>list <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token operator">&amp;&amp;</span> p <span class="token operator">!=</span> <span class="token operator">&amp;</span>e<span class="token punctuation">.</span>list<span class="token punctuation">.</span>root <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> p
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Prev returns the previous list element or nil.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>e <span class="token operator">*</span>Element<span class="token punctuation">)</span> <span class="token function">Prev</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span>Element <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> p <span class="token operator">:=</span> e<span class="token punctuation">.</span>prev<span class="token punctuation">;</span> e<span class="token punctuation">.</span>list <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token operator">&amp;&amp;</span> p <span class="token operator">!=</span> <span class="token operator">&amp;</span>e<span class="token punctuation">.</span>list<span class="token punctuation">.</span>root <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> p
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>总的来说，这两个方法的执行逻辑是：</p> <ul><li>如果该元素在某一个链表上，且其前一个（后一个）元素不是链表的根元素，则返回其前一个（后一个）元素</li> <li>其它情况下，即如果该元素不属于任何链表，或者其前一个（后一个）元素为链表的根元素，则返回<code>nil</code>（即：链表的根元素只起到一个占位作用，而并不会存储数据值）</li></ul> <h2 id="list"><a href="#list" aria-hidden="true" class="header-anchor">#</a> List</h2> <p>通过<code>New()</code>方法可以创建一个新的链表：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token comment">// List represents a doubly linked list.</span>
+<span class="token comment">// The zero value for List is an empty list ready to use.</span>
+<span class="token keyword">type</span> List <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    root Element <span class="token comment">// sentinel list element, only &amp;root, root.prev, and root.next are used</span>
+    <span class="token builtin">len</span>  <span class="token builtin">int</span>     <span class="token comment">// current list length excluding (this) sentinel element</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Init initializes or clears list l.</span>
+<span class="token keyword">func</span> <span class="token punctuation">(</span>l <span class="token operator">*</span>List<span class="token punctuation">)</span> <span class="token function">Init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span>List <span class="token punctuation">{</span>
+    l<span class="token punctuation">.</span>root<span class="token punctuation">.</span>next <span class="token operator">=</span> <span class="token operator">&amp;</span>l<span class="token punctuation">.</span>root
+    l<span class="token punctuation">.</span>root<span class="token punctuation">.</span>prev <span class="token operator">=</span> <span class="token operator">&amp;</span>l<span class="token punctuation">.</span>root
+    l<span class="token punctuation">.</span><span class="token builtin">len</span> <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">return</span> l
+<span class="token punctuation">}</span>
+
+<span class="token comment">// New returns an initialized list.</span>
+<span class="token keyword">func</span> <span class="token function">New</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span>List <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token function">new</span><span class="token punctuation">(</span>List<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Init</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">}</span>
+</code></pre></div><p>可以看到，<code>New()</code>实际上调用了<code>Init()</code>方法，主要作用就是初始化一个链表的根元素。</p> <p>事实上，List是一个首尾相连的环状结构，只不过由于根元素只是起到了占位作用，对外是不可见的，因此对于用户操作来说，看到的是一个链状结构。</p> <p>其相关操作以及源码都比较简单，不做赘述。下面是一个例子：</p> <div class="language-go extra-class"><pre class="language-go"><code><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">&quot;container/list&quot;</span>
+    <span class="token string">&quot;fmt&quot;</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    l <span class="token operator">:=</span> list<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    l<span class="token punctuation">.</span><span class="token function">PushBack</span><span class="token punctuation">(</span><span class="token string">&quot;a&quot;</span><span class="token punctuation">)</span>
+    <span class="token function">printList</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span> <span class="token comment">// a</span>
+
+    l<span class="token punctuation">.</span><span class="token function">PushBack</span><span class="token punctuation">(</span><span class="token string">&quot;b&quot;</span><span class="token punctuation">)</span>
+    <span class="token function">printList</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span> <span class="token comment">// a b</span>
+
+    l<span class="token punctuation">.</span><span class="token function">PushFront</span><span class="token punctuation">(</span><span class="token string">&quot;c&quot;</span><span class="token punctuation">)</span>
+    <span class="token function">printList</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span> <span class="token comment">// c a b</span>
+
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>l<span class="token punctuation">.</span><span class="token function">Front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Value<span class="token punctuation">)</span> <span class="token comment">// c</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>l<span class="token punctuation">.</span><span class="token function">Back</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>Value<span class="token punctuation">)</span>  <span class="token comment">// b</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>l<span class="token punctuation">.</span><span class="token function">Len</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>         <span class="token comment">// 3</span>
+
+    l<span class="token punctuation">.</span><span class="token function">MoveToBack</span><span class="token punctuation">(</span>l<span class="token punctuation">.</span><span class="token function">Front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token function">printList</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span> <span class="token comment">// a b c</span>
+
+    l<span class="token punctuation">.</span><span class="token function">MoveToFront</span><span class="token punctuation">(</span>l<span class="token punctuation">.</span><span class="token function">Back</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token function">printList</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span> <span class="token comment">// c a b</span>
+
+    l<span class="token punctuation">.</span><span class="token function">Remove</span><span class="token punctuation">(</span>l<span class="token punctuation">.</span><span class="token function">Back</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token function">printList</span><span class="token punctuation">(</span>l<span class="token punctuation">)</span> <span class="token comment">// c a</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">printList</span><span class="token punctuation">(</span>l <span class="token operator">*</span>list<span class="token punctuation">.</span>List<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> e <span class="token operator">:=</span> l<span class="token punctuation">.</span><span class="token function">Front</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> e <span class="token operator">!=</span> <span class="token boolean">nil</span><span class="token punctuation">;</span> e <span class="token operator">=</span> e<span class="token punctuation">.</span><span class="token function">Next</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Print</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>Value<span class="token punctuation">,</span> <span class="token string">&quot; &quot;</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</code></pre></div></div> <div class="page-edit"><!----> <!----></div> <div class="page-nav"><p class="inner"><span class="prev">
+        ←
+        <a href="/go-pkgs/container/heap.html" class="prev">
+          container/heap
+        </a></span> <span class="next"><a href="/go-pkgs/container/ring.html">
+          container/ring
+        </a>
+        →
+      </span></p></div> </div> <!----></div></div>
+    <script src="/go-pkgs/assets/js/7.5ff195c7.js" defer></script><script src="/go-pkgs/assets/js/app.fe7484d0.js" defer></script>
+  </body>
+</html>
