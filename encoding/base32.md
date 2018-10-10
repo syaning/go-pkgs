@@ -1,4 +1,4 @@
-# base32
+# encoding/base32
 
 关于 base32 的信息查看 [wiki](https://en.wikipedia.org/wiki/Base32) 和 [RFC 4648](https://tools.ietf.org/html/rfc4648)。
 

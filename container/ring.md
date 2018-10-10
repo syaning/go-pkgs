@@ -1,4 +1,4 @@
-# ring
+# container/ring
 
 ring是一个首尾相连的list。其中每一个元素的定义如下：
 

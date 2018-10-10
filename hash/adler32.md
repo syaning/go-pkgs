@@ -1,4 +1,4 @@
-# adler32
+# hash/adler32
 
 Adler-32是一种校验和算法，详情参考[wiki](https://en.wikipedia.org/wiki/Adler-32)。
 

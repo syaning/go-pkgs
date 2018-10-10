@@ -1,4 +1,4 @@
-# hex
+# encoding/hex
 
 ```go
 package main

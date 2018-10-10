@@ -1,4 +1,4 @@
-# hmac
+# crypto/hmac
 
 ```go
 package main
